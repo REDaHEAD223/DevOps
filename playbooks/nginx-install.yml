@@ -1,0 +1,28 @@
+---
+- name: Install and start nginx
+  hosts: all
+  become: yes
+
+  vars:
+    nginx_index_text: "Hello from AWX!"
+
+  tasks:
+    - name: Ensure nginx is installed
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Place custom index.html
+      copy:
+        dest: /var/www/html/index.html
+        content: "{{ nginx_index_text }}"
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+    - name: Ensure nginx is running and enabled
+      service:
+        name: nginx
+        state: started
+        enabled: yes
