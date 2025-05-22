@@ -15,6 +15,12 @@
     - name: Разрешить SSH
       command: ufw allow 22
 
+    - name: Разрешить SSH
+      command: ufw allow 8080
+
+    - name: Разрешить SSH
+      command: ufw allow 8090
+
   rescue:
     - name: Лог ошибки
       debug:
