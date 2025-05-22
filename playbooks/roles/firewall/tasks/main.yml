@@ -1,0 +1,24 @@
+---
+- name: Установить ufw
+  apt:
+    name: ufw
+    state: present
+    update_cache: yes
+  tags: [firewall, install]
+  when: enable_firewall | default(false)
+
+- name: Включить ufw (через блок)
+  block:
+    - name: Активировать ufw
+      command: ufw --force enable
+
+    - name: Разрешить SSH
+      command: ufw allow 22
+
+  rescue:
+    - name: Лог ошибки
+      debug:
+        msg: "Не удалось включить ufw — ошибка!"
+
+  tags: [firewall, rules]
+  when: enable_firewall | default(false)
