@@ -1,0 +1,17 @@
+---
+- name: Установить список полезных пакетов
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - htop
+    - curl
+    - net-tools
+    - git
+
+- name: Убедиться, что nginx остановлен (если установлен)
+  service:
+    name: nginx
+    state: stopped
+  when: "'nginx' in ansible_facts.packages"
