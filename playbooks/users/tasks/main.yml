@@ -1,0 +1,14 @@
+---
+- name: Ensure user exists
+  user:
+    name: "{{ username }}"
+    groups: "{{ groups | default('sudo') }}"
+    shell: /bin/bash
+    state: present
+    create_home: yes
+
+- name: Add authorized key
+  authorized_key:
+    user: "{{ username }}"
+    key: "{{ lookup('file', 'files/id_rsa.pub') }}"
+    state: present
