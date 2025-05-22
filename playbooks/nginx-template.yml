@@ -10,6 +10,13 @@
         state: present
         update_cache: yes
 
+    - name: Remove nginx if requested
+      apt:
+      name: nginx
+      state: absent
+      when: remove_nginx | default(false)
+      tags: [remove]
+
     - name: Place templated index.html
       template:
         src: templates/index.html.j2
