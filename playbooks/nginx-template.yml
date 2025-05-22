@@ -4,18 +4,19 @@
   become: yes
 
   tasks:
+    - name: Remove nginx if requested
+      apt:
+        name: nginx
+        state: absent
+      when: remove_nginx | default(false)
+      tags: [remove]
+
     - name: Ensure nginx is installed
       apt:
         name: nginx
         state: present
         update_cache: yes
-
-    - name: Remove nginx if requested
-      apt:
-      name: nginx
-      state: absent
-      when: remove_nginx | default(false)
-      tags: [remove]
+      tags: [install]
 
     - name: Place templated index.html
       template:
@@ -24,9 +25,11 @@
         owner: www-data
         group: www-data
         mode: '0644'
+      tags: [template]
 
     - name: Ensure nginx is running
       service:
         name: nginx
         state: started
         enabled: yes
+      tags: [service]
