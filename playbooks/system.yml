@@ -1,0 +1,7 @@
+---
+- name: System maintenance
+  hosts: all
+  become: yes
+
+  roles:
+    - system
