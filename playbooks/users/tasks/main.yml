@@ -2,8 +2,7 @@
 - name: Ensure user exists
   user:
     name: "{{ username }}"
-    groups: >-
-  {{ groups if groups is string or groups is sequence else ['sudo'] }}
+    groups: "{{ groups | default('sudo') }}"
     shell: /bin/bash
     state: present
     create_home: yes
