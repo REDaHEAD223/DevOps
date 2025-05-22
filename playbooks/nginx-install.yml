@@ -4,7 +4,7 @@
   become: yes
 
   vars:
-    nginx_index_text: "Hello from AWX!"
+    nginx_index_text: "{{ custom_text }}"
 
   tasks:
     - name: Ensure nginx is installed
