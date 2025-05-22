@@ -1,0 +1,36 @@
+---
+- name: Обновление кэша пакетов
+  apt:
+    update_cache: yes
+  tags: [apt, update]
+
+- name: Обновление всех пакетов
+  apt:
+    upgrade: dist
+  tags: [apt, upgrade]
+
+- name: Автоматическая очистка пакетов
+  apt:
+    autoremove: yes
+    autoclean: yes
+  tags: [apt, clean]
+
+- name: Удаление ненужного пакета (пример)
+  apt:
+    name: apache2
+    state: absent
+    purge: yes
+  tags: [apt, purge]
+
+- name: Проверка, что nginx включён
+  command: systemctl is-enabled nginx
+  register: nginx_enabled
+  failed_when: nginx_enabled.rc != 0 and nginx_enabled.rc != 1
+  changed_when: false
+  tags: [nginx, status]
+
+- name: Перезапуск nginx
+  service:
+    name: nginx
+    state: restarted
+  tags: [nginx, restart]
