@@ -1,19 +1,6 @@
+---
 - name: Manage multiple users
+  include_tasks: user_entry.yml
   loop: "{{ users }}"
-  vars:
-    current_user: "{{ item }}"
-  block:
-    - name: Ensure user exists or is removed
-      user:
-        name: "{{ current_user.name }}"
-        group: "{{ current_user.group | default(omit) }}"
-        shell: /bin/bash
-        state: "{{ current_user.state | default('present') }}"
-        create_home: true
-
-    - name: Add SSH key (only if present)
-      authorized_key:
-        user: "{{ current_user.name }}"
-        key: "{{ lookup('file', 'files/id_rsa.pub') }}"
-        state: present
-      when: current_user.state | default('present') == 'present'
+  loop_control:
+    loop_var: current_user
