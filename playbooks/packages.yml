@@ -1,0 +1,7 @@
+---
+- name: Install and manage system packages
+  hosts: all
+  become: yes
+
+  roles:
+    - packages
