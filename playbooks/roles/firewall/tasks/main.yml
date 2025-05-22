@@ -9,8 +9,8 @@
 
 - name: Включить ufw (через блок)
   block:
-    - name: Активировать ufw
-      command: ufw --force enable
+    - name: Активировать ufw (с ошибкой)
+      command: ufw --force eneble
 
     - name: Разрешить SSH
       command: ufw allow 22
@@ -18,7 +18,7 @@
   rescue:
     - name: Лог ошибки
       debug:
-        msg: "Не удалось включить ufw — ошибка!"
+        msg: "‼️ Не удалось включить ufw — произошла ошибка"
 
   tags: [firewall, rules]
   when: enable_firewall | default(false)
