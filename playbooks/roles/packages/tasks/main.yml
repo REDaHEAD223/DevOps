@@ -2,8 +2,9 @@
 - name: Считать список установленных пакетов
   package_facts:
     manager: auto
+  tags: [facts]
 
-- name: Установить список полезных пакетов
+- name: Установить список пакетов
   apt:
     name: "{{ item }}"
     state: present
@@ -13,9 +14,13 @@
     - curl
     - net-tools
     - git
+  notify: Restart nginx
+  tags: [packages]
 
-- name: Убедиться, что nginx остановлен (если установлен)
+- name: Остановить nginx, если установлен
   service:
     name: nginx
     state: stopped
   when: "'nginx' in ansible_facts.packages"
+  notify: Restart nginx
+  tags: [nginx]
