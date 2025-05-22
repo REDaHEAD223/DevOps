@@ -1,9 +1,4 @@
 ---
-- name: Debug API key (не для продакшена)
-  debug:
-    msg: "API Key is {{ ansible_password }}"
-  no_log: false  # временно выключаем сокрытие, чтобы увидеть в stdout
-
 - name: Считать список установленных пакетов
   package_facts:
     manager: auto
