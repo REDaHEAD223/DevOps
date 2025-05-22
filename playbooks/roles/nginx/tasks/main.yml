@@ -1,0 +1,20 @@
+---
+- name: Установить nginx
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: Подложить шаблон index.html
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    owner: www-data
+    group: www-data
+    mode: '0644'
+
+- name: Убедиться, что nginx запущен
+  service:
+    name: nginx
+    state: started
+    enabled: yes
