@@ -7,24 +7,31 @@
   tags: [firewall, install]
   when: enable_firewall | default(false)
 
-- name: Включить ufw (через блок)
+- name: Включить и настроить ufw (через блок)
   block:
-    - name: Активировать ufw (с ошибкой)
-      command: ufw --force enable
+    - name: Установить политику по умолчанию (deny)
+      command: ufw default deny incoming
+      changed_when: false
 
     - name: Разрешить SSH
       command: ufw allow 22
 
-    - name: Разрешить SSH
+    - name: Разрешить порт Jenkins
       command: ufw allow 8080
 
-    - name: Разрешить SSH
+    - name: Разрешить порт nginx
       command: ufw allow 8090
 
-  rescue:
-    - name: Лог ошибки
-      debug:
-        msg: "‼️ Не удалось включить ufw — произошла ошибка"
+    - name: Включить ufw
+      command: ufw --force enable
 
-  tags: [firewall, rules]
+  rescue:
+    - debug:
+        msg: "‼️ Не удалось включить ufw"
+
+  always:
+    - debug:
+        msg: "✅ Завершение настройки ufw"
+
   when: enable_firewall | default(false)
+  tags: [firewall, rules]
