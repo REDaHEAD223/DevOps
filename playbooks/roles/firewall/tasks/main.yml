@@ -18,17 +18,11 @@
       command: ufw default deny incoming
       changed_when: false
 
-    - name: Разрешить SSH
-      command: ufw allow 22
-
-    - name: Разрешить порт Jenkins
-      command: ufw allow 8080
-
-    - name: Разрешить порт nginx
-      command: ufw allow 8090
-
-    - name: Включить ufw
-      command: ufw --force enable
+    - name: Разрешить нужные порты
+      command: "ufw allow {{ item }}"
+      loop: "{{ open_ports }}"
+      when: enable_firewall | default(false)
+      tags: [firewall, rules]
 
   rescue:
     - debug:
