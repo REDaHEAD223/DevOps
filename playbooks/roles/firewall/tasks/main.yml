@@ -24,6 +24,10 @@
       when: enable_firewall | default(false)
       tags: [firewall, rules]
 
+    - name: Включить ufw
+      command: ufw --force enable
+      tags: [firewall, enable]
+
   rescue:
     - debug:
         msg: "‼️ Не удалось включить ufw"
