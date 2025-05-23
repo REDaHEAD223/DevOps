@@ -7,6 +7,11 @@
   tags: [firewall, install]
   when: enable_firewall | default(false)
 
+- name: Выключить ufw, если отключение включено
+  command: ufw disable
+  when: enable_firewall | default(false) == false
+  tags: [firewall, disable]
+
 - name: Включить и настроить ufw (через блок)
   block:
     - name: Установить политику по умолчанию (deny)
