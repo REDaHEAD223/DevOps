@@ -40,3 +40,14 @@
 
   when: enable_firewall | default(false)
   tags: [firewall, rules]
+
+- name: Показать статус ufw
+  command: ufw status
+  register: ufw_status
+  changed_when: false
+  tags: [firewall, status]
+
+- name: Вывести статус UFW
+  debug:
+    var: ufw_status.stdout
+  tags: [firewall, status]
